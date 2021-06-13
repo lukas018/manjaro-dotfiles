@@ -1,3 +1,4 @@
+fpath+=~/.zfunc
 # Use powerline
 USE_POWERLINE="false"
 # Source manjaro-zsh-configuration
@@ -61,6 +62,4 @@ add-zsh-hook -Uz chpwd (){ vterm_set_directory }
 eval "$(starship init zsh)"
 
 export PATH="$HOME/.poetry/bin:$PATH"
-fpath=( ~/.zfunc "${fpath[@]}" )
-
 eval "$(pyenv init -)"
