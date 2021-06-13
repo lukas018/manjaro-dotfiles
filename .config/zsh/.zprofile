@@ -16,3 +16,9 @@ export PYTHONPYCACHEPREFIX="$HOME/.cache/cpython/"
 if [[ ! $DISPLAY && $XDG_VTNR -eq 1 ]]; then
   exec startx   # remove the exec to remain logged in when your wm ends
 fi
+
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+if command -v pyenv 1>/dev/null 2>&1; then
+  eval "$(pyenv init --path)"
+fi

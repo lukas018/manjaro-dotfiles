@@ -59,3 +59,8 @@ add-zsh-hook -Uz chpwd (){ vterm_set_directory }
 
 # Use the much nicer starship prompt
 eval "$(starship init zsh)"
+
+export PATH="$HOME/.poetry/bin:$PATH"
+fpath=( ~/.zfunc "${fpath[@]}" )
+
+eval "$(pyenv init -)"
