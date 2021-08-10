@@ -4,3 +4,6 @@
 [submodule ".config/.config/doom"]
 	path = .config/.config/doom
 	url = git@github.com:lukas018/emacs-config.git
+[submodule "org"]
+	path = org
+	url = git@github.com:lukas018/org-files.git
