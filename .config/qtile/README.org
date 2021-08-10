@@ -136,17 +136,13 @@ keys = [
              desc='Doom Emacs'
              ),
          ### Switch focus to specific monitor (out of three)
-         Key([mod], "w",
+         Key([mod, "shift"], "e",
              lazy.to_screen(0),
              desc='Keyboard focus to monitor 1'
              ),
-         Key([mod], "e",
+         Key([mod, "shift"], "w",
              lazy.to_screen(1),
              desc='Keyboard focus to monitor 2'
-             ),
-         Key([mod], "r",
-             lazy.to_screen(2),
-             desc='Keyboard focus to monitor 3'
              ),
          ### Switch focus of monitors
          Key([mod], "period",
@@ -319,7 +315,7 @@ Groups are really workspaces.
 
 #+BEGIN_SRC python
 group_names = [("www", {'layout': 'monadtall', 'spawn': 'brave'}),
-               ("dev", {'layout': 'monadtall', 'spawn': '/usr/local/bin/emacs'}),
+               ("dev", {'layout': 'monadtall', 'spawn': 'emacsclient -c -a emacs'}),
                ("sys", {'layout': 'monadtall'}),
                ("doc", {'layout': 'monadtall'}),
                ("vbox", {'layout': 'monadtall'}),
@@ -564,9 +560,10 @@ def init_widgets_screen2():
     return widgets_screen2                 # Monitor 2 will display all widgets in widgets_list
 
 def init_screens():
-    return [Screen(top=bar.Bar(widgets=init_widgets_screen1(), opacity=1.0, size=20)),
-            Screen(top=bar.Bar(widgets=init_widgets_screen2(), opacity=1.0, size=20)),
-            Screen(top=bar.Bar(widgets=init_widgets_screen1(), opacity=1.0, size=20))]
+    return [
+        Screen(top=bar.Bar(widgets=init_widgets_screen1(), opacity=1.0, size=20)),
+        Screen(top=bar.Bar(widgets=init_widgets_screen2(), opacity=1.0, size=20))
+    ]
 
 if __name__ in ["config", "__main__"]:
     screens = init_screens()

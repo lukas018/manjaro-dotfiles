@@ -1,17 +1,13 @@
-#
-# wm independent hotkeys
-#
-
 # terminal emulator
 super + Return
 	  alacritty
 
 # program launcher
 super + d
-	  rofi -show drun -lines 15 -show-icons -matching normal -columns 1 -width 70 -location 5 -auto-select -m -4
+	  rofi -show drun -lines 15 -show-icons -matching normal -columns 1 -width 70 -location 5 -m -4
 
 super + shift + d
-	  rofi -modi combi -combi-modi window -show combi -lines 15 -show-icons -matching normal -columns 1 -width 70 -location 5 -auto-select -m -4
+	  rofi -modi combi -combi-modi window -show combi -lines 15 -show-icons -matching normal -columns 1 -width 70 -location 5 -m -4
 
 # make sxhkd reload its configuration files:
 super + r
@@ -44,6 +40,15 @@ super + g
 #
 # state/flags
 #
+
+super + shift + m
+	  amixer set 'Master' 10%+
+
+super + shift + n
+	  amixer set 'Master' 10%-
+
+super + shift + n + m
+	  amixer set 'Master' 0%
 
 # set the window state
 super + {t,shift + t,s,f}

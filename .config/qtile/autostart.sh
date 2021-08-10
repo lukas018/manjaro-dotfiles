@@ -11,7 +11,6 @@ wal -R
 # Set the wallpaper
 sh ~/.fehbg
 # urxvtd -q -o -f &
-# Launch emacs as a daemon
-/usr/local/bin/emacs &
 # volumeicon &
 # nm-applet &
+# sh ~/.screenlayout/two-monitor.sh
