@@ -1,5 +1,10 @@
 #!/bin/bash
 
+sh setup-manjaro.sh
+sh setup-python.sh
+sh setup-fonts.sh
+sh setup-emacs.sh
+
 cd "$HOME"
 yadm submodule update --recursive --init
 
