@@ -1,8 +1,7 @@
 sh ~/.screenlayout/two-monitor.sh
-
-# Initialize qtile
-# qtile start
+setxkbmap -option ctrl:nocaps
+setxkbmap us,se -option "grp:alt_shift_toggle"
+sh $HOME/.fehbg
+picom --daemon
 bspwm
 
-# Launch polybar
-sh $XDG_CONFIG_HOME/polybar/run.sh

@@ -1,5 +1,6 @@
 fpath+=~/.zfunc
 # Use powerline
+wal -R 1>/dev/null
 USE_POWERLINE="false"
 # Source manjaro-zsh-configuration
 if [[ -e /usr/share/zsh/manjaro-zsh-config ]]; then
@@ -20,10 +21,6 @@ export PATH=$PATH:$HOME/.emacs.d/bin/
 export PYENV_ROOT=$HOME/.pyenv
 export PATH=$PYENV_ROOT/bin:$PATH
 export PATH=/usr/local/texlive/2021/bin/x86_64-linux:$PATH
-
-if command -v pyenv 1>/dev/null 2>&1; then
-  eval "$(pyenv init -)"
-fi
 
 # # shell configuration for emacs-vterm
 vterm_printf(){
