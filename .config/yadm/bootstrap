@@ -1,9 +1,10 @@
 #!/bin/bash
+CURR_DIR=dirname "$0"
 
-sh setup-manjaro.sh
-sh setup-python.sh
-sh setup-fonts.sh
-sh setup-emacs.sh
+sh $CURR_DIR/setup-manjaro.sh
+sh $CURR_DIR/setup-python.sh
+sh $CURR_DIR/setup-fonts.sh
+sh $CURR_DIR/setup-emacs.sh
 
 cd "$HOME"
 yadm submodule update --recursive --init
