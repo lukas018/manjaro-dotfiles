@@ -3,7 +3,7 @@
 	url = https://github.com/zsh-users/zsh-autosuggestions.git
 [submodule ".config/doom"]
 	path = .config/doom
-	url = git@github.com:lukas018/emacs-config.git
+	url = https://github.com/lukas018/emacs-config.git
 [submodule "org"]
 	path = org
-	url = git@github.com:lukas018/org-files.git
+	url = https://github.com/lukas018/org-files.git
