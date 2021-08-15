@@ -25,17 +25,23 @@ yadm checkout --quiet
 yes | sh -c "$(curl -fsSL https://starship.rs/install.sh)"
 
 # Install some relevant applications
-paru -Sy brave flameshot postman-bin bspwm xmonad feh --noconfirm
-paru -S python-pip --noconfirm
+paru -S brave \
+    postman-bin \
+    bspwm xmonad feh flameshot polybar picom\
+    xorg-xrdb xinit-xsession \
+    python-pip --noconfirm
+
+paru -S alacritty  --noconfirm
 yes | pip install pywal qtile
 
 # Install all the fonts we want
-paru -Sy ttf-jetbrains-mono otf-overpass ttf-juliamono otf-ibm-plex ttf-merriweather ttf-alegreya --noconfirm
+paru -Sy ttf-fira-code ttf-jetbrains-mono otf-overpass ttf-juliamono otf-ibm-plex ttf-merriweather ttf-alegreya --noconfirm
 
 # PYTHON
 pip install --user pipx
 
 # I don't use pdm that much, but if PEP 582 gets accepted I might start to
+# Anyway, it might be nice to have
 pipx install pdm
 
 # Install poetry
@@ -47,6 +53,10 @@ cd ~/.pyenv && sh setup-python.sh
 
 # Install EPSON Printer drivers
 paru -S epson-inkjet-printer-escpr --noconfirm
+
+# Install some things for developments
+paru -S npm
+paru -S docker docker-compose
 
 # EMACS
 # Install this with paru for conveniance
@@ -64,6 +74,13 @@ emacs --batch --eval "(progn (require 'org) (setq org-confirm-babel-evaluate nil
 git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.emacs.d
 yes | ~/.emacs.d/bin/doom install
 yes |  ~/.config/doom/setup.sh
+
+# Install LaTex and its utilities (should go pretty fast with parallel install)
+paru -S texlive-most tllocalmgr-git --noconfirm
+
+
+# Optional tethering support
+paru -S libimobiledevice
 
 # Kill sudo refresh
 kill "$infiloop"
