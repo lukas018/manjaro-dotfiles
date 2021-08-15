@@ -35,7 +35,14 @@ paru -S alacritty  --noconfirm
 yes | pip install pywal qtile
 
 # Install all the fonts we want
-paru -Sy ttf-fira-code ttf-jetbrains-mono otf-overpass ttf-juliamono otf-ibm-plex ttf-merriweather ttf-alegreya --noconfirm
+paru -Sy ttf-fira-code ttf-jetbrains-mono \
+    otf-overpass ttf-juliamono otf-ibm-plex \
+    ttf-merriweather ttf-alegreya --noconfirm
+
+# Siji font
+paru -S xorg-xfd
+cd /tmp && git clone https://github.com/stark/siji \
+    && cd siji && sh install.sh && rm /tmp/siji
 
 # PYTHON
 pip install --user pipx
@@ -77,7 +84,6 @@ yes |  ~/.config/doom/setup.sh
 
 # Install LaTex and its utilities (should go pretty fast with parallel install)
 paru -S texlive-most tllocalmgr-git --noconfirm
-
 
 # Optional tethering support
 paru -S libimobiledevice
