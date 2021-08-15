@@ -1,0 +1,27 @@
+#+title: Installing this system
+#+author: luklun
+#+date: 2021-08-15
+
+* Installing these dotfiles on an Arch-based system
+
+Install AUR manager PARU
+#+begin_src sh
+echo "ParallelDownloads = 5" | sudo tee -a /etc/pacman.conf
+sudo pacman Syu
+sudo pacman -S --needed base-devel rust --noconfirm
+mkdir ~/Downloads && git clone https://aur.archlinux.org/paru.git ~/Downloads
+cd ~/Downloads/paru && makepkg -si
+rm -r ~/Downloads/paru
+#+end_src
+
+Install our dotfile manager
+#+begin_src sh
+paru -S yadm
+#+end_src
+
+Download our dotfiles
+#+begin_src sh
+cd ~
+yadm clone https://github.com/lukas018/manjaro-dotfiles.git
+yadm bootstrap
+#+end_src
