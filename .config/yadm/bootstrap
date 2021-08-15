@@ -21,19 +21,13 @@ yadm submodule update --recursive --init
 chmod 700 ~/.cache ~/.config
 yadm checkout --quiet
 
-# Install Paru for easy AUR access, so first we need to prepare makepkg
-pacman -S --needed base-devel rust --noconfirm
-# Clone Paru and build
-git clone https://aur.archlinux.org/paru.git
-cd paru
-makepkg -si
-
 # Install starship prompt
-sh -c "$(curl -fsSL https://starship.rs/install.sh)"
+yes | sh -c "$(curl -fsSL https://starship.rs/install.sh)"
 
 # Install some relevant applications
 paru -Sy brave flameshot postman-bin bspwm xmonad feh --noconfirm
-pip install pywal qtile
+paru -S python-pip --noconfirm
+yes | pip install pywal qtile
 
 # Install all the fonts we want
 paru -Sy ttf-jetbrains-mono otf-overpass ttf-juliamono otf-ibm-plex ttf-merriweather ttf-alegreya --noconfirm
@@ -52,7 +46,7 @@ git clone https://github.com/pyenv/pyenv.git ~/.pyenv
 cd ~/.pyenv && sh setup-python.sh
 
 # Install EPSON Printer drivers
-paru -S epson-inkjet-printer-escpr
+paru -S epson-inkjet-printer-escpr --noconfirm
 
 # EMACS
 # Install this with paru for conveniance
