@@ -26,6 +26,28 @@ function install_alacritty_deb {
 	sudo apt update && sudo apt install alacritty -y
 }
 
+function install_docker_deb {
+	# Install docker
+	curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+	sudo apt-get install apt-transport-https ca-certificates curl software-properties-common
+	sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu  $(lsb_release -cs)  stable"
+	sudo apt update
+	sudo apt install docker-ce -y
+
+	# Start the docker service
+	sudo systemctl start docker
+	sudo systemctl enable docker
+
+	# Prevents permission denied error while connecting to docker daemon socket
+	sudo newgrp docker
+	sudo chmod 666 /var/run/docker.sock
+	sudo usermod -aG docker ${USER}
+
+	# Install docker compose
+	sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+	sudo chmod +x /usr/local/bin/docker-compose
+}
+
 # List of common apps that can be downloaded directly
 APPS="flameshot bspwm xmonad feh htop docker docker-compose rofi ripgrep"
 

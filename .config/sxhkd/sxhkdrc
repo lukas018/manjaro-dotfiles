@@ -37,6 +37,7 @@ super + y
 super + g
 	bspc node -s biggest.window
 
+
 #
 # state/flags
 #
@@ -133,3 +134,10 @@ super + {Left,Right,Up,Down}
     dir={west,east,north,south}; bspc node "$dir" -f || bspc monitor "$dir" -f
 super + {h,l,k,j}
     dir={west,east,north,south}; bspc node "$dir" -f || bspc monitor "$dir" -f
+
+# Move current desktop to next monitor
+super + shift + ctrl + {h,l}
+  desk=`bspc query -D -d focused`; \
+  bspc desktop -m {prev,next}; \
+  bspc monitor -f {prev,next}; \
+  bspc desktop -f $desk
