@@ -7,3 +7,6 @@
 [submodule "org"]
 	path = org
 	url = https://github.com/lukas018/org-files.git
+[submodule ".config/zsh/zsh-history-substring-search"]
+	path = .config/zsh/zsh-history-substring-search
+	url = https://github.com/zsh-users/zsh-history-substring-search

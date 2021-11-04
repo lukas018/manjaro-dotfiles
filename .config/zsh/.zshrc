@@ -1,28 +1,28 @@
 fpath+=~/.zfunc
 # Use powerline
 wal -R 1>/dev/null
-USE_POWERLINE="false"
-# Source manjaro-zsh-configuration
-if [[ -e /usr/share/zsh/manjaro-zsh-config ]]; then
-  source /usr/share/zsh/manjaro-zsh-config
-fi
 
-# Use manjaro zsh prompt
-if [[ -e /usr/share/zsh/manjaro-zsh-prompt ]]; then
-  source /usr/share/zsh/manjaro-zsh-prompt
-fi
+# ZSH HISTORY
+HISTFILE="$HOME/.zsh_history"
+HISTSIZE=100000
+SAVEHIST=100000
+setopt SHARE_HISTORY
 
+# Emulated fish functionality
+# fish-like auto suggestion
+source ~/.config/zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+# Enable substring search in zsh history
+source ~/.config/zsh/zsh-history-substring-search/zsh-history-substring-search.zsh
+bindkey "$terminfo[kcuu1]" history-substring-search-up
+bindkey "$terminfo[kcud1]" history-substring-search-down
 
 # Set all relevant aliases
 alias config='git --git-dir $HOME/.cfg/ --work-tree=$HOME'
 alias l='ls -lah'
 export PATH=$PATH:$HOME/.emacs.d/bin/
 
-export PYENV_ROOT=$HOME/.pyenv
-export PATH=$PYENV_ROOT/bin:$PATH
-export PATH=/usr/local/texlive/2021/bin/x86_64-linux:$PATH
 
-# # shell configuration for emacs-vterm
+## SHELL CONFIGURATION FOR EMACS-VTERM
 vterm_printf(){
     if [ -n "$TMUX" ] && ([ "${TERM%%-*}" = "tmux" ] || [ "${TERM%%-*}" = "screen" ] ); then
         # Tell tmux to pass the escape sequences through
@@ -48,15 +48,20 @@ vterm_cmd() {
 vterm_set_directory() {
     vterm_cmd update-pwd "$PWD/"
 }
-# vterm_set_directory() {
-#     vterm_cmd update-pwd "/-:""$USER""@""$HOSTNAME""#53000:""$PWD/"
-# }
 
 autoload -U add-zsh-hook
 add-zsh-hook -Uz chpwd (){ vterm_set_directory }
 
-# Use the much nicer starship prompt
+# STARSHIP PROMPT
 eval "$(starship init zsh)"
 
-export PATH="$HOME/.poetry/bin:$PATH"
+# CONFIGURATIONS FOR PYTHON
+export PYENV_ROOT=$HOME/.pyenv
+export PATH=$PYENV_ROOT/bin:$PATH
 eval "$(pyenv init -)"
+export PATH="$HOME/.poetry/bin:$PATH"
+
+# Configure Node Version Manager
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
