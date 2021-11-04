@@ -2,26 +2,48 @@
 #+author: luklun
 #+date: 2021-08-15
 
-* Installing these dotfiles on an Arch-based system
+* About
+This repo contains my dotfiles. They  define a minimal development environment that can be automatically be installed up on the distros I tend to use, i.e. Arch, Manjaro and Ubuntu.
 
-Install AUR manager PARU
+* Quick Description
+Emacs as the primary text editor, file manager, development tool, and optional terminal.
+Alacritty as the primary terminal emulator.
+*zsh* as the shell with fish-like completion and history substring search.
+bspwm as the main window manager.
+polybar with minimal ricing.
+
+* Installation
+** Installing YADM to manage the dotfiles
+*** Arch
+Download the YADM script directly from github
 #+begin_src sh
-echo "ParallelDownloads = 5" | sudo tee -a /etc/pacman.conf
-sudo pacman Syu
-sudo pacman -S --needed base-devel rust --noconfirm
-mkdir ~/Downloads && git clone https://aur.archlinux.org/paru.git ~/Downloads
-cd ~/Downloads/paru && makepkg -si
-rm -r ~/Downloads/paru
+curl -fLo /usr/local/bin/yadm https://github.com/TheLocehiliosan/yadm/raw/master/yadm && chmod a+x /usr/local/bin/yadm
 #+end_src
 
-Install our dotfile manager
+*** Ubuntu
 #+begin_src sh
-paru -S yadm
+sudo apt install yadm
 #+end_src
 
-Download our dotfiles
+** Pulling the dotfiles and start the auto setup
 #+begin_src sh
 cd ~
 yadm clone https://github.com/lukas018/manjaro-dotfiles.git
+#+end_src
+
+** Install programs and packages
+This will run the YADM bootstrap script at ~\~/.config/yadm/bootstrap~ which will install and build all the programs that the installation requires.
+It's nothing magic, just a simple script
+#+begin_src sh
 yadm bootstrap
 #+end_src
+
+** Updating dotfiles
+YADM is a wrapper around git so most git commands work out of the box
+E.g.,
+#+begin_src sh
+yadm add changed-file.txt && yadm commit -m "Changed file" && yadm push origin master
+#+end_src
+
+* TODOS
+- MAC support

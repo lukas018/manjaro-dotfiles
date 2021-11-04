@@ -1,92 +1,145 @@
 #!/bin/bash
 
-sudo -v
-
-# Enable parallell downloads with pacman
-echo "ParallelDownloads = 5" >> /etc/pacman.conf
-
-# Update the system
-pacman -Syu
+# Get the current operating system
+OS=$(uname -a)
 
 # This allows us to refresh sudo timeout
 while :; do sudo -v; sleep 59; done &
 # Remember to kill this at the end
 infiloop=$!
 
-cd "$HOME"
-# Install yadm submodules, e.g. Emacs Config, org documents, zsh autocomplete etc.
+# Install zsh if we haven't already
+if ![[ command -v zsh ]]; then
+    if [[ "$OS" == *"Ubuntu"* ]]; then
+        sudo apt install zsh
+    elif [[ "$OS" == *"Arch"* || "$OS" == *"Manjaro"* ]]; then
+        sudo pacman -S zsh --noconfirm
+    fi
+    chsh -s $(which zsh) # this will require a restart later
+fi
+
+# Install our defined yadm submodules, e.g. Emacs Config, org documents, zsh autocomplete etc.
 yadm submodule update --recursive --init
 
-# permissions
+# Update the remote of the Emacs config, such that we can push later
+cd $HOME/doom && git remote set-url git@github.com:lukas018/emacs-config.git
+
+# Update the systems package manager
+if [[ "$OS" == *"Ubuntu"* ]]; then
+    sudo apt update && sudo apt install unzip wget git curl apt-transport-https -y
+elif [[ "$OS" == *"Arch"* || "$OS" == *"Manjaro"* ]]; then
+    # Enable parallell downloads with pacman
+    echo "ParallelDownloads = 5" >> /etc/pacman.conf
+    pacman -Syu
+    pacman -S --needed base-devel
+    # Install paru to so we can use the AUR
+    git clone https://aur.archlinux.org/paru.git repos/ && cd repos/paru && makepkg -si
+
+
+# Change some permissions
 chmod 700 ~/.cache ~/.config
-yadm checkout --quiet
 
-# Install starship prompt
-yes | sh -c "$(curl -fsSL https://starship.rs/install.sh)"
+# Install starship prompt for zsh
+yes | zsh -c "$(curl -fsSL https://starship.rs/install.sh)"
 
-# Install some relevant applications
-paru -S brave \
-    postman-bin \
-    bspwm xmonad feh flameshot polybar picom\
-    xorg-xrdb xinit-xsession \
-    python-pip --noconfirm
+# Get the working directory of the  bootstrap script
+DIR="$(cd "$(dirname "$0")" && pwd)"
 
-paru -S alacritty  --noconfirm
+# Install the fonts we require
+$DIR/setup-fonts.sh
+
+# Install PYTHON related stuff
+if [[ "$OS" == *"Arch"* || "$OS" == *"Manjaro"* ]]; then
+    paru -S python3-pip --noconfirm
+elif [[ "$OS" == *"Ubuntu"* ]]; then
+    sudo apt install python3-pip -y
+fi
+
+# Some useful programs
 yes | pip install pywal qtile
 
-# Install all the fonts we want
-paru -Sy ttf-fira-code ttf-jetbrains-mono \
-    otf-overpass ttf-juliamono otf-ibm-plex \
-    ttf-merriweather ttf-alegreya --noconfirm
-
-# Siji font
-paru -S xorg-xfd
-cd /tmp && git clone https://github.com/stark/siji \
-    && cd siji && sh install.sh && rm /tmp/siji
-
-# PYTHON
+# Python package managers
 pip install --user pipx
-
-# I don't use pdm that much, but if PEP 582 gets accepted I might start to
-# Anyway, it might be nice to have
 pipx install pdm
 
-# Install poetry
+# poetry for easy project management
 curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
 
-# Install pyenv
+# Install pyenv and use it to download a specific python version
 git clone https://github.com/pyenv/pyenv.git ~/.pyenv
-cd ~/.pyenv && sh setup-python.sh
+zsh -ic "pyenv install 3.9.10"
+zsh -ic "pyenv global 3.9.10"
 
-# Install EPSON Printer drivers
-paru -S epson-inkjet-printer-escpr --noconfirm
+# Install EPSON Printer drivers, arch only
+if [[ "$OS" == *"Arch"* || "$OS" == *"Manjaro"* ]]; then
+    paru -S epson-inkjet-printer-escpr --noconfirm
+fi
 
-# Install some things for developments
-paru -S npm
-paru -S docker docker-compose
+# Install node package manager
+curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | zsh
+zsh -ic "nvm install node"
 
-# EMACS
-# Install this with paru for conveniance
-paru -S libgccjit --noconfirm
+# Install docker and docker-compose
+if [[ "$OS" == *"Ubuntu"* ]]; then
+    sudo apt install docker docker-compose
+elif [[ "$OS" == *"Arch"* || "$OS" == *"Manjaro"* ]]; then
+    paru -S docker docker-compose
+fi
 
-# Here we need to edit the packagefile to enable JIT
-git clone https://aur.archlinux.org/emacs-git.git
-cd emacs-git
-# Enable JIT compilation
-sed -i 's/JIT=/JIT="YES"/g' PKGBUILD
-makepkg -si --noconfirm
+# Installing Emacs
+if [[ "$OS" == *"Ubuntu"* ]]; then
+    sudo apt install libtool libtool-bin -y # For building vterm in Emacs
+    sudo apt install snapd -y
+    sudo snap install emacs
+elif [[ "$OS" == *"Arch"* || "$OS" == *"Manjaro"* ]]; then
+    # Install this with paru for conveniance
+    paru -S libgccjit --noconfirm
+
+    # Here we need to edit the packagefile to enable JIT
+    mkdir repos
+    git clone https://aur.archlinux.org/emacs-git.git repos
+    # Build emacs
+    cd repos/emacs-git && sed -i 's/JIT=/JIT="YES"/g' PKGBUILD && makepgk -si --noconfirm
+fi
 
 # Tangle our Emacs Config & install Doom Emacs
 emacs --batch --eval "(progn (require 'org) (setq org-confirm-babel-evaluate nil) (org-babel-tangle-file \"~/.config/doom/config.org\"))"
 git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.emacs.d
-yes | ~/.emacs.d/bin/doom install
 yes |  ~/.config/doom/setup.sh
+yes | ~/.emacs.d/bin/doom install
 
-# Install LaTex and its utilities (should go pretty fast with parallel install)
-paru -S texlive-most tllocalmgr-git --noconfirm
+# Apply the current emacs theme to the entire system using wal
+emacs --eval "theme-magic-from-emacs" && cp ~/.cache/wal/colors.Xresources ~/.Xresources && xrdb ~/.Xresources
+
+# Install LaTex and some utilities
+if [[ "$OS" == *"Ubuntu"* ]]; then
+    sudo apt install texlive-latex-extra
+elif [[ "$OS" == *"Arch"* || "$OS" == *"Manjaro"* ]]; then
+    # should go pretty fast with parallel install
+    paru -S texlive-most tllocalmgr-git --noconfirm
+fi
 
 # Optional tethering support
-paru -S libimobiledevice
+if [[ "$OS" == *"Ubuntu"* ]]; then
+    sudo add-apt-repository ppa:pmcenery/ppa && apt update && apt install ipeth-utils
+elif [[ "$OS" == *"Arch"* || "$OS" == *"Manjaro"* ]]; then
+    paru -S libimobiledevice
+fi
 
 # Kill sudo refresh
 kill "$infiloop"
+
+# Ask the user if we shold logout
+read -r -p "Want to logout for changes to take effect? [Y/n] " input
+case $input in
+    [yY][eE][sS]|[yY])
+        pkill -f x
+        ;;
+    [nN][oO]|[nN])
+        echo "Ok"
+        ;;
+    *)
+    echo "Ok"
+    exit 1
+    ;;
+esac
