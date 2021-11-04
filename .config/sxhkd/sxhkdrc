@@ -127,3 +127,9 @@ super + alt + shift + {h,j,k,l}
 # move a floating window
 super + {Left,Down,Up,Right}
 	bspc node -v {-20 0,0 20,0 -20,20 0}
+
+# Use same movement for monitors and windows
+super + {Left,Right,Up,Down}
+    dir={west,east,north,south}; bspc node "$dir" -f || bspc monitor "$dir" -f
+super + {h,l,k,j}
+    dir={west,east,north,south}; bspc node "$dir" -f || bspc monitor "$dir" -f
