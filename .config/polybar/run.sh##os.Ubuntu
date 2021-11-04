@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+pkill polybar
+while pgrep polybar >/dev/null; do sleep 1; done
+
+export MONITOR=HDMI-0
+polybar-git main >$XDG_DATA_HOME/polybar.log 2>&1 &
+echo 'Polybar launched monitor 1'
+
+export MONITOR=DP-2
+polybar-git main >$XDG_DATA_HOME/polybar.log 2>&1 &
+echo 'Polybar launched monitor 2'
+
+export MONITOR=DP-0
+polybar-git main >$XDG_DATA_HOME/polybar.log 2>&1 &
+echo 'Polybar launched monitor 3'
