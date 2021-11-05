@@ -26,4 +26,3 @@ export FONT="JetBrains Mono"
 
 export PATH=$HOME/.local/bin/:$PATH
 export PATH=$HOME/Repos/Pico/pico-8:$PATH
-. "$HOME/.cargo/env"

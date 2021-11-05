@@ -1,17 +1,23 @@
-#!/bin/bash
+#!/usr/bin/bash
 
 # Get the current operating system
 OS=$(uname -a)
 
 # This allows us to refresh sudo timeout
-while :; do sudo -v; sleep 59; done &
+# while :; do sudo -v; sleep 59; done &
 # Remember to kill this at the end
-infiloop=$!
+# infiloop=$!
+
+echo $OS
+if [[ "$OS" == *"Ubuntu"* ]]; then
+  echo "We are at Ubutu"
+fi
 
 # Install zsh if we haven't already
-if ![[ command -v zsh ]]; then
+if [ ! $(command -v zsh) ]; then
+    echo "Install zsh"
     if [[ "$OS" == *"Ubuntu"* ]]; then
-        sudo apt install zsh
+        sudo apt install zsh -y
     elif [[ "$OS" == *"Arch"* || "$OS" == *"Manjaro"* ]]; then
         sudo pacman -S zsh --noconfirm
     fi
@@ -22,11 +28,12 @@ fi
 yadm submodule update --recursive --init
 
 # Update the remote of the Emacs config, such that we can push later
-cd $HOME/doom && git remote set-url git@github.com:lukas018/emacs-config.git
+# cd $HOME/.config/doom && git remote set-url origin git@github.com:lukas018/emacs-config.git
 
 # Update the systems package manager
 if [[ "$OS" == *"Ubuntu"* ]]; then
-    sudo apt update && sudo apt install unzip wget git curl apt-transport-https -y
+    echo "We install some packages"
+    # sudo apt update && sudo apt install unzip wget git curl apt-transport-https -y
 elif [[ "$OS" == *"Arch"* || "$OS" == *"Manjaro"* ]]; then
     # Enable parallell downloads with pacman
     echo "ParallelDownloads = 5" >> /etc/pacman.conf
@@ -34,50 +41,29 @@ elif [[ "$OS" == *"Arch"* || "$OS" == *"Manjaro"* ]]; then
     pacman -S --needed base-devel
     # Install paru to so we can use the AUR
     git clone https://aur.archlinux.org/paru.git repos/ && cd repos/paru && makepkg -si
-
+fi
 
 # Change some permissions
 chmod 700 ~/.cache ~/.config
 
-# Install starship prompt for zsh
-yes | zsh -c "$(curl -fsSL https://starship.rs/install.sh)"
-
 # Get the working directory of the  bootstrap script
 DIR="$(cd "$(dirname "$0")" && pwd)"
 
-# Install the fonts we require
-$DIR/setup-fonts.sh
-
-# Install PYTHON related stuff
-if [[ "$OS" == *"Arch"* || "$OS" == *"Manjaro"* ]]; then
-    paru -S python3-pip --noconfirm
-elif [[ "$OS" == *"Ubuntu"* ]]; then
-    sudo apt install python3-pip -y
+# Install starship prompt for zsh
+if [ ! $(command -v zsh) ]; then
+	yes | sh -c "$(curl -fsSL https://starship.rs/install.sh)"
 fi
 
-# Some useful programs
-yes | pip install pywal qtile
-
-# Python package managers
-pip install --user pipx
-pipx install pdm
-
-# poetry for easy project management
-curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
-
-# Install pyenv and use it to download a specific python version
-git clone https://github.com/pyenv/pyenv.git ~/.pyenv
-zsh -ic "pyenv install 3.9.10"
-zsh -ic "pyenv global 3.9.10"
-
-# Install EPSON Printer drivers, arch only
-if [[ "$OS" == *"Arch"* || "$OS" == *"Manjaro"* ]]; then
-    paru -S epson-inkjet-printer-escpr --noconfirm
-fi
+# Setup our default shell environment with python
+bash $DIR/setup-python.sh
 
 # Install node package manager
 curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | zsh
+
 zsh -ic "nvm install node"
+
+# Install the fonts we require
+zsh $DIR/setup-fonts.sh##os.Ubuntu
 
 # Install docker and docker-compose
 if [[ "$OS" == *"Ubuntu"* ]]; then
@@ -90,7 +76,7 @@ fi
 if [[ "$OS" == *"Ubuntu"* ]]; then
     sudo apt install libtool libtool-bin -y # For building vterm in Emacs
     sudo apt install snapd -y
-    sudo snap install emacs
+    sudo snap install emacs --classic
 elif [[ "$OS" == *"Arch"* || "$OS" == *"Manjaro"* ]]; then
     # Install this with paru for conveniance
     paru -S libgccjit --noconfirm
@@ -109,7 +95,7 @@ yes |  ~/.config/doom/setup.sh
 yes | ~/.emacs.d/bin/doom install
 
 # Apply the current emacs theme to the entire system using wal
-emacs --eval "theme-magic-from-emacs" && cp ~/.cache/wal/colors.Xresources ~/.Xresources && xrdb ~/.Xresources
+# emacs --batch --eval "theme-magic-from-emacs" && cp ~/.cache/wal/colors.Xresources ~/.Xresources && xrdb ~/.Xresources
 
 # Install LaTex and some utilities
 if [[ "$OS" == *"Ubuntu"* ]]; then
@@ -126,8 +112,13 @@ elif [[ "$OS" == *"Arch"* || "$OS" == *"Manjaro"* ]]; then
     paru -S libimobiledevice
 fi
 
+# Install EPSON Printer drivers, arch only
+if [[ "$OS" == *"Arch"* || "$OS" == *"Manjaro"* ]]; then
+    paru -S epson-inkjet-printer-escpr --noconfirm
+fi
+
 # Kill sudo refresh
-kill "$infiloop"
+#kill "$infiloop"
 
 # Ask the user if we shold logout
 read -r -p "Want to logout for changes to take effect? [Y/n] " input
