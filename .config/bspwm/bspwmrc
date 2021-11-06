@@ -1,18 +1,22 @@
-#! /bin/sh
+#!/usr/bin/bash
 
-# Better to init this using our init system
+# Utility for checking if a program exist
+_check() {
+	command -v "$1" > /dev/null
+}
+
+# Start the keymapper
 pgrep -x sxhkd > /dev/null || sxhkd &
+
+# Reset background if we have set if before
+[ -f "$HOME/.fehbg" ] && $HOME/.fehbg
+
+# Setup the workspaces for the monitor
 bspc monitor -d I II III IV V VI VII VIII IX X
-
-# bspc monitor HDMI-2 -d I II III IV V
-
 bspc config border_width         0
 bspc config window_gap          20
 
-# bspc config -m HDMI-2 top_padding -20
-# bspc config -m HDMI-2 bottom_padding 10
-
-bspc config split_ratio          0.52
+bspc config split_ratio          0.8
 bspc config borderless_monocle   true
 bspc config gapless_monocle      true
 
@@ -22,5 +26,9 @@ bspc rule -a mplayer2 state=floating
 bspc rule -a Kupfer.py focus=on
 bspc rule -a Screenkey manage=off
 
-# Launch polybar
-# $XDG_CONFIG_HOME/polybar/run.sh
+reset_polybar() {
+	$HOME/.config/polybar/run.sh
+}
+# Launch polybar on all monitors
+# For some reason this crashes during startup, what to do
+_check polybar && reset_polybar

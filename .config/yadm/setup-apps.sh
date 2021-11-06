@@ -20,18 +20,30 @@ function install_polybar_deb {
 	python_version=$(pyenv version-name)
 	cd repos/polybar && pyenv global system && yes | ./build.sh
 	pyenv global $python_version
+
+	# This is needed to enable siji fonts in polybar
+	sudo rm -r /etc/fonts/conf.d/70-no-bitmaps.conf
+
 }
 
+function install_alacritty_deb {
+	yes "\r" | sudo add-apt-repository ppa:aslatter/ppa
+	sudo apt update && sudo apt install alacritty -y
+}
 
 # List of common apps that can be downloaded directly
-APPS="flameshot bspwm xmonad feh htop docker docker-compose"
+APPS="flameshot bspwm xmonad feh htop docker docker-compose rofi"
 
 if [[ "$OS" == *"Ubuntu"* ]]; then
 	sudo apt install $(echo $APPS) -y
 	install_brave_deb
 	install_polybar_deb
+	install_alacritty_deb
 	sudo apt install texlive-latex-extra -y
 elif [[ "$OS" == *"Arch"* || "$OS" == *"Manjaro"* ]]; then
 	paru -S brave polybar $(echo $APPS) --noconfirm
 	paru -S texlive-most tllocalmgr-git --noconfirm
+
+	# This is needed to enable siji fonts in polybar
+	sudo rm -r /etc/fonts/conf.d/70-no-bitmaps.conf
 fi

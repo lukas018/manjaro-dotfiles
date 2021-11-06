@@ -6,3 +6,6 @@ sh $HOME/.fehbg
 # picom --daemon
 bspwm
 
+# Init fonts
+xset +fp $HOME/.local/share/fonts
+xset fp rehash

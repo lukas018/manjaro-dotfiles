@@ -63,3 +63,8 @@ vterm_set_directory() {
 
 autoload -U add-zsh-hook
 add-zsh-hook -Uz chpwd (){ vterm_set_directory }
+
+# Utility function for restarting polybar
+export -f reset_polybar() {
+   $HOME/.config/polybar/run.sh
+}

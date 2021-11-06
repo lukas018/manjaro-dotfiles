@@ -42,17 +42,18 @@ elif [[ "$OS" == *"Arch"* || "$OS" == *"Manjaro"* ]]; then
 	sudo paru -S xorg-xfd	--noconfirm
 fi
 
-# Install siji font
-git clone https://github.com/stark/siji /tmp/siji && cd /tmp/siji && sh install.sh
+# Install SIJI font
+git clone https://github.com/stark/siji /tmp/siji \
+	&& cd /tmp/siji && sh install.sh -d $HOME/.local/share/fonts
 
-# Font-awesome
+# FONT-AWESOME
 if [[ "$OS" == *"Ubuntu"* ]]; then
 	sudo apt update && sudo apt install -y fonts-font-awesome
 elif [[ "$OS" == *"Arch"* || "$OS" == *"Manjaro"* ]]; then
 	sudo paru -S ttf-font-awesome --noconfirm
 fi
 
-# Paper Icon
+# PAPER ICON
 if [[ "$OS" == *"Ubuntu"* ]]; then
 	yes \r | sudo add-apt-repository ppa:snwh/ppa && sudo apt update -y && sudo apt install paper-icon-theme -y
 elif [[ "$OS" == *"Arch"* || "$OS" == *"Manjaro"* ]]; then

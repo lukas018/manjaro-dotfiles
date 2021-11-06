@@ -8,11 +8,6 @@ while :; do sudo -v; sleep 59; done &
 # Remember to kill this at the end
 infiloop=$!
 
-echo $OS
-if [[ "$OS" == *"Ubuntu"* ]]; then
-  echo "We are at Ubutu"
-fi
-
 # Install zsh if we haven't already
 if [ ! $(command -v zsh) ]; then
     echo "Install zsh"
@@ -47,13 +42,14 @@ chmod 700 ~/.cache ~/.config
 # Get the working directory of the  bootstrap script
 DIR="$(cd "$(dirname "$0")" && pwd)"
 
+# Install the starship shell prompt
 curl https://starship.rs/install.sh > /tmp/install.sh
 sh /tmp/install.sh --force
 
-# Setup our default shell environment with python
+# Setup python
 zsh $DIR/setup-python.sh
 
-# Install the fonts we require
+# Install all the fonts
 zsh $DIR/setup-fonts.sh
 
 # Install some of the applications we needs
@@ -62,21 +58,20 @@ zsh $DIR/setup-apps.sh
 # Install doom emacs
 zsh $DIR/setup-emacs.sh
 
-# Optional tethering support
-if [[ "$OS" == *"Arch"* || "$OS" == *"Manjaro"* ]]; then
-    paru -S libimobiledevice --noconfirm
-fi
+# Set the wallpaper ... if we can
+[ $(command -v feh) ] && feh --bg-fill ~/Pictures/wallpapers/neo-wallpaper.jpg
+
+# Optional tethering support, arch only
+[[ "$OS" == *"Arch"* || "$OS" == *"Manjaro"* ]] && paru -S libimobiledevice --noconfirm
 
 # Install EPSON Printer drivers, arch only
-if [[ "$OS" == *"Arch"* || "$OS" == *"Manjaro"* ]]; then
-    paru -S epson-inkjet-printer-escpr --noconfirm
-fi
+[[ "$OS" == *"Arch"* || "$OS" == *"Manjaro"* ]] && paru -S epson-inkjet-printer-escpr --noconfirm
 
 # Kill sudo refresh
 kill "$infiloop"
 
 # Ask the user if we shold logout
-read -r -p "Want to logout for changes to take effect? [Y/n] " input
+read -r -p "Logout for changes to take effect? [Y/n] " input
 case $input in
     [yY][eE][sS]|[yY])
         pkill -f x
