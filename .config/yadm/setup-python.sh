@@ -1,4 +1,5 @@
-echo "Setup zsh"
+#!/usr/bin/zsh
+echo "Setup python and node"
 
 # Get the current operating system
 OS=$(uname -a)
@@ -15,16 +16,33 @@ elif [[ "$OS" == *"Arch"* || "$OS" == *"Manjaro"* ]]; then
     paru -S --needed python3-pip base-devel openssl zlib xz --noconfirm
 fi
 
-
 # Install pyenv and use it to download a specific python version
 git clone https://github.com/pyenv/pyenv.git ~/.pyenv
-zsh -ic "source $HOME/.config/zsh/.zprofile && pyenv install 3.9.7 && pyenv global 3.9.7"
+
+# Reload the configurations
+function source_zsh_config {
+	ZSH_PATH=$HOME/.config/zsh
+	source $ZSH_PATH/.zprofile && source $ZSH_PATH/.zshrc
+}
+
+source_zsh_config
+# Install a new python environment
+pyenv install 3.9.7 && pyenv global 3.9.7
+
+# Update pip
+pip install pip --upgrade
 
 # Some useful programs
-zsh -ic "yes | pip install pywal qtile"
+yes | pip install pywal qtile
 
 # Python package managers
-zsh -ic "yes | pip install --user pipx && pipx install pdm"
+yes | pip install --user pipx && pipx install pdm
 
 # Poetry for easy project management
-zsh -ic "curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/install-poetry.py | python3 -"
+curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/install-poetry.py | python3 -
+
+
+# Install node package manager
+curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | zsh
+source_zsh_config
+nvm install node

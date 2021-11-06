@@ -1,26 +1,38 @@
+#### GENERAL CONFIG ####
 fpath+=~/.zfunc
-# Use powerline
-wal -R 1>/dev/null
 
-# ZSH HISTORY
+# Set some cool colors with wal if we can
+[ $(command -v wal) ] && wal -R 1>/dev/null
+
+# Configure zsh history
 HISTFILE="$HOME/.zsh_history"
 HISTSIZE=100000
 SAVEHIST=100000
 setopt SHARE_HISTORY
 
-# Emulated fish functionality
-# fish-like auto suggestion
+# Convient alieses
+alias l='ls -lah'
+
+eval "$(starship init zsh)"
+eval "$(pyenv init -)"
+
+# Configure Node Version Manager (NVM)
+export NVM_DIR="$HOME/.config/nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+#### FISH shell-like functionality ####
+# Auto suggestion
 source ~/.config/zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
-# Enable substring search in zsh history
+
+# Substring search in zsh history
 source ~/.config/zsh/zsh-history-substring-search/zsh-history-substring-search.zsh
 bindkey "$terminfo[kcuu1]" history-substring-search-up
 bindkey "$terminfo[kcud1]" history-substring-search-down
 
-# Set all relevant aliases
-alias config='git --git-dir $HOME/.cfg/ --work-tree=$HOME'
-alias l='ls -lah'
+#### EMACS RELATED ####
+# Add doom do the path
 export PATH=$PATH:$HOME/.emacs.d/bin/
-
 
 ## SHELL CONFIGURATION FOR EMACS-VTERM
 vterm_printf(){
@@ -51,15 +63,3 @@ vterm_set_directory() {
 
 autoload -U add-zsh-hook
 add-zsh-hook -Uz chpwd (){ vterm_set_directory }
-
-# STARSHIP PROMPT
-eval "$(starship init zsh)"
-
-# CONFIGURATIONS FOR PYTHON
-export PATH="$HOME/.poetry/bin:$PATH"
-eval "$(pyenv init -)"
-
-# Configure Node Version Manager
-export NVM_DIR="$HOME/.config/nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

@@ -27,9 +27,6 @@ fi
 # Install our defined yadm submodules, e.g. Emacs Config, org documents, zsh autocomplete etc.
 yadm submodule update --recursive --init
 
-# Update the remote of the Emacs config, such that we can push later
-# cd $HOME/.config/doom && git remote set-url origin git@github.com:lukas018/emacs-config.git
-
 # Update the systems package manager
 if [[ "$OS" == *"Ubuntu"* ]]; then
     echo "We install some packages"
@@ -58,12 +55,8 @@ DIR="$(cd "$(dirname "$0")" && pwd)"
 yes | sh -c "$(curl -fsSL https://starship.rs/install.sh)"
 
 # Setup our default shell environment with python
-bash $DIR/setup-python.sh
+zsh $DIR/setup-python.sh
 
-# Install node package manager
-curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | zsh
-
-zsh -ic "nvm install node"
 
 # Install the fonts we require
 zsh $DIR/setup-fonts.sh
