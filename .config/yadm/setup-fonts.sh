@@ -13,6 +13,9 @@ mkdir -p $HOME/.local/share/fonts
 # Alegreya
 wget https://www.1001fonts.com/download/alegreya.zip -P /tmp && cd /tmp && unzip alegreya.zip -d alegreya && mv alegreya/*.ttf ~/.local/share/fonts
 
+# Merriweather
+wget https://www.1001fonts.com/download/merriweather.zip -P /tmp && cd /tmp && unzip merriweather.zip -d merriweather && mv merriweather/*.ttf ~/.local/share/fonts
+
 # Fira Code
 wget https://github.com/tonsky/FiraCode/releases/download/5.2/Fira_Code_v5.2.zip -P /tmp && cd /tmp && unzip Fira_Code_v5.2.zip && mv ttf/*.ttf ~/.local/share/fonts
 
@@ -30,11 +33,6 @@ wget https://github.com/cormullion/juliamono/releases/download/v0.043/JuliaMono.
 #IMB-Flex-Plex
 wget https://github.com/IBM/plex/releases/download/v6.0.0/OpenType.zip -O /tmp/ibm-plex.zip && cd /tmp && unzip ibm-plex.zip && mv OpenType/*/*otf ~/.local/share/fonts
  
-
-# Merriweather
-echo "Installing Merriweather font... this may take a while"
-git clone https://github.com/SorkinType/Merriweather.git /tmp/Merriweather && cd /tmp/Merriweather && mv fonts/*/*.ttf ~/.local/share/fonts
-
 # SIJI
 # Install dependencies
 if [[ "$OS" == *"Ubuntu"* ]]; then
