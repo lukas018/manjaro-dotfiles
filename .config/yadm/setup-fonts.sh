@@ -38,7 +38,7 @@ wget https://github.com/IBM/plex/releases/download/v6.0.0/OpenType.zip -O /tmp/i
 if [[ "$OS" == *"Ubuntu"* ]]; then
 	sudo apt update
 	sudo apt install x11-utils -y
-elif [[ "$OS" == *"Arch"* || "$OS" == *"Manjaro"* ]]; then
+elif [[ "$OS" == *"Arch"* || "$OS" == *"MANJARO"* ]]; then
 	sudo paru -S xorg-xfd	--noconfirm
 fi
 
@@ -49,13 +49,13 @@ git clone https://github.com/stark/siji /tmp/siji \
 # FONT-AWESOME
 if [[ "$OS" == *"Ubuntu"* ]]; then
 	sudo apt update && sudo apt install -y fonts-font-awesome
-elif [[ "$OS" == *"Arch"* || "$OS" == *"Manjaro"* ]]; then
+elif [[ "$OS" == *"Arch"* || "$OS" == *"MANJARO"* ]]; then
 	sudo paru -S ttf-font-awesome --noconfirm
 fi
 
 # PAPER ICON
 if [[ "$OS" == *"Ubuntu"* ]]; then
 	yes \r | sudo add-apt-repository ppa:snwh/ppa && sudo apt update -y && sudo apt install paper-icon-theme -y
-elif [[ "$OS" == *"Arch"* || "$OS" == *"Manjaro"* ]]; then
+elif [[ "$OS" == *"Arch"* || "$OS" == *"MANJARO"* ]]; then
 	sudo paru -S paper-icon-theme --noconfirm
 fi

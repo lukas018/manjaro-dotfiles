@@ -27,13 +27,13 @@ if [[ "$OS" == *"Ubuntu"* ]]; then
     echo "We install some packages"
     sudo apt update
     sudo apt install unzip wget git curl apt-transport-https -y
-elif [[ "$OS" == *"Arch"* || "$OS" == *"Manjaro"* ]]; then
+elif [[ "$OS" == *"Arch"* || "$OS" == *"MANJARO"* ]]; then
     # Enable parallell downloads with pacman
-    echo "ParallelDownloads = 5" >> /etc/pacman.conf
-    pacman -Syu
-    pacman -S --needed base-devel
+    # echo "ParallelDownloads = 5" | sudo tee -a /etc/pacman.conf
+    sudo pacman -Syu --noconfirm
+    sudo pacman -S --needed base-devel --noconfirm
     # Install paru to so we can use the AUR when installing
-    git clone https://aur.archlinux.org/paru.git repos/ && cd repos/paru && makepkg -si
+    git clone https://aur.archlinux.org/paru.git ~/repos/ && cd ~/repos && makepkg -si --noconfirm
 fi
 
 # Change some permissions
@@ -62,10 +62,10 @@ zsh $DIR/setup-emacs.sh
 [ $(command -v feh) ] && feh --bg-fill ~/Pictures/wallpapers/neo-wallpaper.jpg
 
 # Optional tethering support, arch only
-[[ "$OS" == *"Arch"* || "$OS" == *"Manjaro"* ]] && paru -S libimobiledevice --noconfirm
+[[ "$OS" == *"Arch"* || "$OS" == *"MANJARO"* ]] && paru -S libimobiledevice --noconfirm
 
 # Install EPSON Printer drivers, arch only
-[[ "$OS" == *"Arch"* || "$OS" == *"Manjaro"* ]] && paru -S epson-inkjet-printer-escpr --noconfirm
+[[ "$OS" == *"Arch"* || "$OS" == *"MANJARO"* ]] && paru -S epson-inkjet-printer-escpr --noconfirm
 
 # Kill sudo refresh
 kill "$infiloop"

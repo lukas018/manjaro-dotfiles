@@ -12,8 +12,8 @@ if [[ "$OS" == *"Ubuntu"* ]]; then
     sudo apt install make build-essential libssl-dev zlib1g-dev \
 	libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm \
 	libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev -y
-elif [[ "$OS" == *"Arch"* || "$OS" == *"Manjaro"* ]]; then
-    paru -S --needed python3-pip base-devel openssl zlib xz --noconfirm
+elif [[ "$OS" == *"Arch"* || "$OS" == *"MANJARO"* ]]; then
+    paru -S --needed python-pip base-devel openssl zlib xz --noconfirm
 fi
 
 # Install pyenv and use it to download a specific python version

@@ -6,15 +6,15 @@ if [[ "$OS" == *"Ubuntu"* ]]; then
     sudo apt install libtool libtool-bin cmake -y # For building vterm in Emacs
     sudo apt install snapd -y
     sudo snap install emacs --classic
-elif [[ "$OS" == *"Arch"* || "$OS" == *"Manjaro"* ]]; then
-    # Install this with paru for conveniance
-    paru -S libgccjit cmake --noconfirm
-
+elif [[ "$OS" == *"Arch"* || "$OS" == *"MANJARO"* ]]; then
+    sudo pacman -S cmake emacs --noconfirm
+    # Install this with paru for conveniance    
+    #paru -S libgccjit cmake --noconfirm
     # Here we need to edit the packagefile to enable JIT
-    mkdir repos
-    git clone https://aur.archlinux.org/emacs-git.git repos
+    #mkdir repos
+    #git clone https://aur.archlinux.org/emacs-git.git repos
     # Build emacs
-    cd repos/emacs-git && sed -i 's/JIT=/JIT="YES"/g' PKGBUILD && makepgk -si --noconfirm
+    #cd repos/emacs-git && sed -i 's/JIT=/JIT="YES"/g' PKGBUILD && makepgk -si --noconfirm
 fi
 
 # Tangle our Emacs Config & install Doom Emacs

@@ -40,7 +40,7 @@ if [[ "$OS" == *"Ubuntu"* ]]; then
 	install_polybar_deb
 	install_alacritty_deb
 	sudo apt install texlive-latex-extra -y
-elif [[ "$OS" == *"Arch"* || "$OS" == *"Manjaro"* ]]; then
+elif [[ "$OS" == *"Arch"* || "$OS" == *"MANJARO"* ]]; then
 	paru -S brave polybar $(echo $APPS) --noconfirm
 	paru -S texlive-most tllocalmgr-git --noconfirm
 
