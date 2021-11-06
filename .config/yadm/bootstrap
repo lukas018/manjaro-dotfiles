@@ -57,7 +57,6 @@ yes | sh -c "$(curl -fsSL https://starship.rs/install.sh)"
 # Setup our default shell environment with python
 zsh $DIR/setup-python.sh
 
-
 # Install the fonts we require
 zsh $DIR/setup-fonts.sh
 
@@ -102,9 +101,7 @@ elif [[ "$OS" == *"Arch"* || "$OS" == *"Manjaro"* ]]; then
 fi
 
 # Optional tethering support
-if [[ "$OS" == *"Ubuntu"* ]]; then
-    #sudo add-apt-repository ppa:pmcenery/ppa && apt update && apt install ipeth-utils -y
-elif [[ "$OS" == *"Arch"* || "$OS" == *"Manjaro"* ]]; then
+if [[ "$OS" == *"Arch"* || "$OS" == *"Manjaro"* ]]; then
     paru -S libimobiledevice --noconfirm
 fi
 
