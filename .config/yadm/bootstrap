@@ -33,7 +33,8 @@ yadm submodule update --recursive --init
 # Update the systems package manager
 if [[ "$OS" == *"Ubuntu"* ]]; then
     echo "We install some packages"
-    # sudo apt update && sudo apt install unzip wget git curl apt-transport-https -y
+    sudo apt update
+    sudo apt install unzip wget git curl apt-transport-https -y
 elif [[ "$OS" == *"Arch"* || "$OS" == *"Manjaro"* ]]; then
     # Enable parallell downloads with pacman
     echo "ParallelDownloads = 5" >> /etc/pacman.conf
@@ -50,9 +51,11 @@ chmod 700 ~/.cache ~/.config
 DIR="$(cd "$(dirname "$0")" && pwd)"
 
 # Install starship prompt for zsh
-if [ ! $(command -v zsh) ]; then
-	yes | sh -c "$(curl -fsSL https://starship.rs/install.sh)"
-fi
+# if [ ! $(command -v zsh) ]; then
+#	
+# fi
+
+yes | sh -c "$(curl -fsSL https://starship.rs/install.sh)"
 
 # Setup our default shell environment with python
 bash $DIR/setup-python.sh
@@ -63,13 +66,13 @@ curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | zsh
 zsh -ic "nvm install node"
 
 # Install the fonts we require
-zsh $DIR/setup-fonts.sh##os.Ubuntu
+zsh $DIR/setup-fonts.sh
 
 # Install docker and docker-compose
 if [[ "$OS" == *"Ubuntu"* ]]; then
-    sudo apt install docker docker-compose
+    sudo apt install docker docker-compose -y
 elif [[ "$OS" == *"Arch"* || "$OS" == *"Manjaro"* ]]; then
-    paru -S docker docker-compose
+    paru -S docker docker-compose --noconfirm
 fi
 
 # Installing Emacs
@@ -91,7 +94,7 @@ fi
 # Tangle our Emacs Config & install Doom Emacs
 emacs --batch --eval "(progn (require 'org) (setq org-confirm-babel-evaluate nil) (org-babel-tangle-file \"~/.config/doom/config.org\"))"
 git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.emacs.d
-yes |  ~/.config/doom/setup.sh
+yes |  bash $HOME/.config/doom/setup.sh
 yes | ~/.emacs.d/bin/doom install
 
 # Apply the current emacs theme to the entire system using wal
@@ -99,7 +102,7 @@ yes | ~/.emacs.d/bin/doom install
 
 # Install LaTex and some utilities
 if [[ "$OS" == *"Ubuntu"* ]]; then
-    sudo apt install texlive-latex-extra
+    sudo apt install texlive-latex-extra -y
 elif [[ "$OS" == *"Arch"* || "$OS" == *"Manjaro"* ]]; then
     # should go pretty fast with parallel install
     paru -S texlive-most tllocalmgr-git --noconfirm
@@ -107,9 +110,9 @@ fi
 
 # Optional tethering support
 if [[ "$OS" == *"Ubuntu"* ]]; then
-    sudo add-apt-repository ppa:pmcenery/ppa && apt update && apt install ipeth-utils
+    #sudo add-apt-repository ppa:pmcenery/ppa && apt update && apt install ipeth-utils -y
 elif [[ "$OS" == *"Arch"* || "$OS" == *"Manjaro"* ]]; then
-    paru -S libimobiledevice
+    paru -S libimobiledevice --noconfirm
 fi
 
 # Install EPSON Printer drivers, arch only
