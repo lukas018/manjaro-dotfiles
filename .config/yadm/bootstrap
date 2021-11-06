@@ -4,9 +4,9 @@
 OS=$(uname -a)
 
 # This allows us to refresh sudo timeout
-# while :; do sudo -v; sleep 59; done &
+while :; do sudo -v; sleep 59; done &
 # Remember to kill this at the end
-# infiloop=$!
+infiloop=$!
 
 echo $OS
 if [[ "$OS" == *"Ubuntu"* ]]; then
@@ -37,7 +37,7 @@ elif [[ "$OS" == *"Arch"* || "$OS" == *"Manjaro"* ]]; then
     echo "ParallelDownloads = 5" >> /etc/pacman.conf
     pacman -Syu
     pacman -S --needed base-devel
-    # Install paru to so we can use the AUR
+    # Install paru to so we can use the AUR when installing
     git clone https://aur.archlinux.org/paru.git repos/ && cd repos/paru && makepkg -si
 fi
 
@@ -47,12 +47,8 @@ chmod 700 ~/.cache ~/.config
 # Get the working directory of the  bootstrap script
 DIR="$(cd "$(dirname "$0")" && pwd)"
 
-# Install starship prompt for zsh
-# if [ ! $(command -v zsh) ]; then
-#	
-# fi
-
-yes | sh -c "$(curl -fsSL https://starship.rs/install.sh)"
+curl https://starship.rs/install.sh > /tmp/install.sh
+sh /tmp/install.sh --force
 
 # Setup our default shell environment with python
 zsh $DIR/setup-python.sh
@@ -60,45 +56,11 @@ zsh $DIR/setup-python.sh
 # Install the fonts we require
 zsh $DIR/setup-fonts.sh
 
-# Install docker and docker-compose
-if [[ "$OS" == *"Ubuntu"* ]]; then
-    sudo apt install docker docker-compose -y
-elif [[ "$OS" == *"Arch"* || "$OS" == *"Manjaro"* ]]; then
-    paru -S docker docker-compose --noconfirm
-fi
+# Install some of the applications we needs
+zsh $DIR/setup-apps.sh
 
-# Installing Emacs
-if [[ "$OS" == *"Ubuntu"* ]]; then
-    sudo apt install libtool libtool-bin -y # For building vterm in Emacs
-    sudo apt install snapd -y
-    sudo snap install emacs --classic
-elif [[ "$OS" == *"Arch"* || "$OS" == *"Manjaro"* ]]; then
-    # Install this with paru for conveniance
-    paru -S libgccjit --noconfirm
-
-    # Here we need to edit the packagefile to enable JIT
-    mkdir repos
-    git clone https://aur.archlinux.org/emacs-git.git repos
-    # Build emacs
-    cd repos/emacs-git && sed -i 's/JIT=/JIT="YES"/g' PKGBUILD && makepgk -si --noconfirm
-fi
-
-# Tangle our Emacs Config & install Doom Emacs
-emacs --batch --eval "(progn (require 'org) (setq org-confirm-babel-evaluate nil) (org-babel-tangle-file \"~/.config/doom/config.org\"))"
-git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.emacs.d
-yes |  bash $HOME/.config/doom/setup.sh
-yes | ~/.emacs.d/bin/doom install
-
-# Apply the current emacs theme to the entire system using wal
-# emacs --batch --eval "theme-magic-from-emacs" && cp ~/.cache/wal/colors.Xresources ~/.Xresources && xrdb ~/.Xresources
-
-# Install LaTex and some utilities
-if [[ "$OS" == *"Ubuntu"* ]]; then
-    sudo apt install texlive-latex-extra -y
-elif [[ "$OS" == *"Arch"* || "$OS" == *"Manjaro"* ]]; then
-    # should go pretty fast with parallel install
-    paru -S texlive-most tllocalmgr-git --noconfirm
-fi
+# Install doom emacs
+zsh $DIR/setup-emacs.sh
 
 # Optional tethering support
 if [[ "$OS" == *"Arch"* || "$OS" == *"Manjaro"* ]]; then
@@ -111,7 +73,7 @@ if [[ "$OS" == *"Arch"* || "$OS" == *"Manjaro"* ]]; then
 fi
 
 # Kill sudo refresh
-#kill "$infiloop"
+kill "$infiloop"
 
 # Ask the user if we shold logout
 read -r -p "Want to logout for changes to take effect? [Y/n] " input
