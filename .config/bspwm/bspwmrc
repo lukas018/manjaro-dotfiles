@@ -27,8 +27,8 @@ bspc rule -a Kupfer.py focus=on
 bspc rule -a Screenkey manage=off
 
 reset_polybar() {
-	$HOME/.config/polybar/run.sh
+	sh $HOME/.config/polybar/run.sh &
 }
+
 # Launch polybar on all monitors
-# For some reason this crashes during startup, what to do
 _check polybar && reset_polybar
