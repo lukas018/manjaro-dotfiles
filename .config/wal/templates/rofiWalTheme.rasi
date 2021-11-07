@@ -1,17 +1,3 @@
-
-configuration {{
-  icon-theme:       "Paper";
-  cycle:            true;
-  disable-history:  false;
-  monitor:          "-4";
-
-  /* Vim-esque C-j/C-k as up/down in rofi */
-  kb-accept-entry: "Return,Control+m,KP_Enter";
-  kb-row-down: "Down,Control+n,Control+j";
-  kb-remove-to-eol: "";
-  kb-row-up: "Up,Control+p,Control+k";
-}}
-
 * {{
   accent:   {color4};
   bg:       {color8};
@@ -26,13 +12,13 @@ configuration {{
   magenta: #bd93f9;
   blue:    #61bfff;
 
-  text-font:      "Fira Sans 9";
-  text-mono-font: "Fira Code 9";
+  text-font:      "Fira Sans 8";
+  text-mono-font: "Fira Code 8";
   /* icon-font:      "Hurmit Nerd Font Mono 26"; */
   icon-font:      "FontAwesome 20";
 
   background-color: transparent;
-  text-color: @fg-list;
+  text-color: @accent;
   font: @text-font;
   border-color: @accent;
 }}
@@ -117,14 +103,11 @@ textbox-icon {{
 }}
 entry{{
   font: @text-font-mono;
-  text-color: @fg;
 }}
 
 element {{
   background-color: @bg-dark;
-  text-color: @fg;
 }}
 element selected {{
   background-color: @bg-light;
-  text-color: @accent;
 }}
