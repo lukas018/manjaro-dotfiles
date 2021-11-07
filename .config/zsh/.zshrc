@@ -1,3 +1,4 @@
+
 #### GENERAL CONFIG ####
 fpath+=~/.zfunc
 
@@ -27,6 +28,12 @@ source ~/.config/zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 # Substring search in zsh history
 source ~/.config/zsh/zsh-history-substring-search/zsh-history-substring-search.zsh
+
+# this works in gnome-terminal
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
+
+# this works in alacritty
 bindkey "$terminfo[kcuu1]" history-substring-search-up
 bindkey "$terminfo[kcud1]" history-substring-search-down
 
