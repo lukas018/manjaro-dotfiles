@@ -47,7 +47,7 @@ super + shift + m
 super + shift + n
 	  amixer set 'Master' 10%-
 
-super + shift + n + m
+super + shift + b
 	  amixer set 'Master' 0%
 
 # set the window state
