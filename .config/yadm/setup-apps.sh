@@ -16,14 +16,11 @@ function install_polybar_deb {
 	sudo ln -s /usr/include/jsoncpp/json/ /usr/include/json
 	mkdir -p repos 
 	git clone https://github.com/jaagr/polybar.git repos/polybar
-	# We need to use the system installation to build so lets save the current version
+
+	# We need to use the system python version to build so we save the current version and switch
 	python_version=$(pyenv version-name)
 	cd repos/polybar && pyenv global system && yes | ./build.sh
-	pyenv global $python_version
-
-	# This is needed to enable siji fonts in polybar
-	sudo rm -r /etc/fonts/conf.d/70-no-bitmaps.conf
-
+	pyenv global $python_version # Go back to our old setting
 }
 
 function install_alacritty_deb {
@@ -41,9 +38,11 @@ if [[ "$OS" == *"Ubuntu"* ]]; then
 	install_alacritty_deb
 	sudo apt install texlive-latex-extra -y
 elif [[ "$OS" == *"Arch"* || "$OS" == *"MANJARO"* ]]; then
-	paru -S brave polybar $(echo $APPS) --noconfirm
+	paru -S brave polybar alacritty $(echo $APPS) --noconfirm
+	paru -S sxhkd --noconfirm # need to install this separetly from bspwm on arch
 	paru -S texlive-most tllocalmgr-git --noconfirm
-
-	# This is needed to enable siji fonts in polybar
-	sudo rm -r /etc/fonts/conf.d/70-no-bitmaps.conf
 fi
+
+# This is needed to enable siji fonts in polybar
+NO_BITMAP_FILE=/etc/fonts/conf.d/70-no-bitmaps.conf
+[ -f $NO_BITMAP_FILE ] && sudo rm NO_BITMAP_FILE
