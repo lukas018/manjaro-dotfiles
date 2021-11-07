@@ -11,7 +11,6 @@ DIR="$(cd "$(dirname "$0")" && pwd)"
 for MONITOR in $(xrandr | grep " connected " | awk '{ print$1 }')
 do
     export MONITOR=$MONITOR
-    polybar main >$XDG_DATA_HOME/polybar.log 2>&1 \
-        --config=$DIR/config.ini &
+    polybar main --config=$DIR/config.ini 2>&1 | tee -a $XDG_DATA_HOME/polybar.log & disown
     echo "Polybar launched in ${MONITOR}"
 done

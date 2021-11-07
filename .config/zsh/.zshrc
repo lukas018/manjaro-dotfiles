@@ -1,11 +1,13 @@
 
 #### GENERAL CONFIG ####
+
+# Set .zfunc to fpath so we can add custom functions there
 fpath+=~/.zfunc
 
 # Set some cool colors with wal if we can
-[ $(command -v wal) ] && wal -R 1>/dev/null
+[ -f ~/.cache/wal/sequences ] && cat ~/.cache/wal/sequences
 
-# Configure zsh history
+# Configure the zsh history
 HISTFILE="$HOME/.zsh_history"
 HISTSIZE=100000
 SAVEHIST=100000
@@ -14,6 +16,7 @@ setopt SHARE_HISTORY
 # Convient alieses
 alias l='ls -lah'
 
+# Setup the cool looking starship prompt
 eval "$(starship init zsh)"
 eval "$(pyenv init -)"
 
@@ -22,7 +25,7 @@ export NVM_DIR="$HOME/.config/nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-#### FISH shell-like functionality ####
+#### FISH shell functionality ####
 # Auto suggestion
 source ~/.config/zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 
@@ -70,8 +73,3 @@ vterm_set_directory() {
 
 autoload -U add-zsh-hook
 add-zsh-hook -Uz chpwd (){ vterm_set_directory }
-
-# Utility function for restarting polybar
-export -f reset_polybar() {
-   $HOME/.config/polybar/run.sh
-}
