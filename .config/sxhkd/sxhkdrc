@@ -4,7 +4,7 @@ super + Return
 
 # program launcher
 super + d
-	  rofi -show drun -lines 15 -show-icons -matching normal -columns 1 -width 70 -location 5 -m -4
+	  rofi -modi drun -show drun -lines 15 -show-icons -matching normal -columns 1 -width 70 -location 5 -m -4
 
 super + shift + d
 	  rofi -modi combi -combi-modi window -show combi -lines 15 -show-icons -matching normal -columns 1 -width 70 -location 5 -m -4
