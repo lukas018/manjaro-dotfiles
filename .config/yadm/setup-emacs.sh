@@ -20,7 +20,7 @@ fi
 # Tangle our Emacs Config & install Doom Emacs
 emacs --batch --eval "(progn (require 'org) (setq org-confirm-babel-evaluate nil) (org-babel-tangle-file \"~/.config/doom/config.org\"))"
 git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.emacs.d
-yes |  bash $HOME/.config/doom/setup.sh
+# yes |  bash $HOME/.config/doom/setup.sh
 yes | ~/.emacs.d/bin/doom install
 
 # Apply the current emacs theme to the entire system using wal
