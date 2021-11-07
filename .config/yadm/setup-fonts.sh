@@ -39,23 +39,29 @@ if [[ "$OS" == *"Ubuntu"* ]]; then
 	sudo apt update
 	sudo apt install x11-utils -y
 elif [[ "$OS" == *"Arch"* || "$OS" == *"MANJARO"* ]]; then
-	sudo paru -S xorg-xfd	--noconfirm
+	paru -S xorg-xfd --noconfirm
 fi
 
 # Install SIJI font
-git clone https://github.com/stark/siji /tmp/siji \
-	&& cd /tmp/siji && sh install.sh -d $HOME/.local/share/fonts
+
+if [[ "$OS" == *"Ubuntu"* ]]; then
+	git clone https://github.com/stark/siji /tmp/siji \
+		&& cd /tmp/siji && sh install.sh -d $HOME/.local/share/fonts
+
+elif [[ "$OS" == *"Arch"* || "$OS" == *"MANJARO"* ]]; then
+	paru -S siji-git --noconfirm
+fi
 
 # FONT-AWESOME
 if [[ "$OS" == *"Ubuntu"* ]]; then
 	sudo apt update && sudo apt install -y fonts-font-awesome
 elif [[ "$OS" == *"Arch"* || "$OS" == *"MANJARO"* ]]; then
-	sudo paru -S ttf-font-awesome --noconfirm
+	paru -S ttf-font-awesome --noconfirm
 fi
 
 # PAPER ICON
 if [[ "$OS" == *"Ubuntu"* ]]; then
 	yes \r | sudo add-apt-repository ppa:snwh/ppa && sudo apt update -y && sudo apt install paper-icon-theme -y
 elif [[ "$OS" == *"Arch"* || "$OS" == *"MANJARO"* ]]; then
-	sudo paru -S paper-icon-theme --noconfirm
+	paru -S paper-icon-theme --noconfirm
 fi
