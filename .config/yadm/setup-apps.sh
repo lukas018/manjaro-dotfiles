@@ -2,9 +2,7 @@
 OS=$(uname -a)
 
 function install_brave_deb {
-	sudo apt install apt-transport-https curl -y
-	sudo curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg
-
+	sudo apt install apt-transport-https curl -y sudo curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg
 	echo "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg arch=amd64] https://brave-browser-apt-release.s3.brave.com/ stable main"|sudo tee /etc/apt/sources.list.d/brave-browser-release.list
 
 	sudo apt update
@@ -29,7 +27,7 @@ function install_alacritty_deb {
 }
 
 # List of common apps that can be downloaded directly
-APPS="flameshot bspwm xmonad feh htop docker docker-compose rofi"
+APPS="flameshot bspwm xmonad feh htop docker docker-compose rofi ripgrep"
 
 if [[ "$OS" == *"Ubuntu"* ]]; then
 	sudo apt install $(echo $APPS) -y
@@ -38,11 +36,12 @@ if [[ "$OS" == *"Ubuntu"* ]]; then
 	install_alacritty_deb
 	sudo apt install texlive-latex-extra -y
 elif [[ "$OS" == *"Arch"* || "$OS" == *"MANJARO"* ]]; then
-	paru -S brave polybar alacritty $(echo $APPS) --noconfirm
+	ARCH_APPS="brave polybar alacritty"
+	paru -S $(echo $ARCH_APPS) $(echo $APPS) --noconfirm
 	paru -S sxhkd --noconfirm # need to install this separetly from bspwm on arch
 	paru -S texlive-most tllocalmgr-git --noconfirm
 fi
 
-# This is needed to enable siji fonts in polybar
+# This is needed to enable siji fonts in polybar for some reason
 NO_BITMAP_FILE=/etc/fonts/conf.d/70-no-bitmaps.conf
 [ -f $NO_BITMAP_FILE ] && sudo rm NO_BITMAP_FILE
