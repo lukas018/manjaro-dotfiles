@@ -10,7 +10,7 @@ function install_brave_deb {
 }
 
 function install_polybar_deb {
-	sudo apt-get install -y cmake cmake-data libcairo2-dev libxcb1-dev libxcb-ewmh-dev libxcb-icccm4-dev libxcb-image0-dev libxcb-randr0-dev libxcb-util0-dev libxcb-xkb-dev pkg-config python3-xcbgen xcb-proto libxcb-xrm-dev i3-wm libasound2-dev libmpdclient-dev libiw-dev libcurl4-openssl-dev libpulse-dev libxcb-composite0-dev libjsoncpp-dev python3-sphinx  python3-xcbgen
+	sudo apt-get install -y cmake cmake-data libcairo2-dev libxcb1-dev libxcb-ewmh-dev libxcb-icccm4-dev libxcb-image0-dev libxcb-randr0-dev libxcb-util0-dev libxcb-xkb-dev pkg-config python3-xcbgen xcb-proto libxcb-xrm-dev i3-wm libasound2-dev libmpdclient-dev libiw-dev libcurl4-openssl-dev libpulse-dev libxcb-composite0-dev libjsoncpp-dev python3-sphinx  python3-xcbgen libuv1-dev
 	sudo ln -s /usr/include/jsoncpp/json/ /usr/include/json
 	mkdir -p repos 
 	git clone https://github.com/jaagr/polybar.git repos/polybar
@@ -44,4 +44,4 @@ fi
 
 # This is needed to enable siji fonts in polybar for some reason
 NO_BITMAP_FILE=/etc/fonts/conf.d/70-no-bitmaps.conf
-[ -f $NO_BITMAP_FILE ] && sudo rm NO_BITMAP_FILE
+[ -f $NO_BITMAP_FILE ] && sudo rm $NO_BITMAP_FILE
