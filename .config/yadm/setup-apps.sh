@@ -39,7 +39,6 @@ function install_docker_deb {
 	sudo systemctl enable docker
 
 	# Prevents permission denied error while connecting to docker daemon socket
-	sudo newgrp docker
 	sudo chmod 666 /var/run/docker.sock
 	sudo usermod -aG docker ${USER}
 
