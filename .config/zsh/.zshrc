@@ -73,3 +73,6 @@ vterm_set_directory() {
 
 autoload -U add-zsh-hook
 add-zsh-hook -Uz chpwd (){ vterm_set_directory }
+
+# bind  DEL to delete-char  make `vterm-send-delete` delete char
+bindkey "\e[3~" delete-char
