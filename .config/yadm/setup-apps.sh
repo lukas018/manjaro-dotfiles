@@ -48,19 +48,26 @@ function install_docker_deb {
 }
 
 # List of common apps that can be downloaded directly
-APPS="flameshot bspwm xmonad feh htop docker docker-compose rofi ripgrep"
+OS_COMMON_APPS="flameshot htop ripgrep feh"
+
+# Linux only apps
+X_WMS="bspwm xmonad"
+LINUX_APPS="$OS_COMMON_APPS $X_WMS  docker docker-compose rofi"
 
 if [[ "$OS" == *"Ubuntu"* ]]; then
-	sudo apt install $(echo $APPS) -y
+	sudo apt install $(echo $LINUX_APPS) -y
 	install_brave_deb
 	install_polybar_deb
 	install_alacritty_deb
 	sudo apt install texlive-latex-extra -y
 elif [[ "$OS" == *"Arch"* || "$OS" == *"MANJARO"* ]]; then
 	ARCH_APPS="brave polybar alacritty"
-	paru -S $(echo $ARCH_APPS) $(echo $APPS) --noconfirm
+	paru -S $(echo $ARCH_APPS) $(echo $LINUX_APPS) --noconfirm
 	paru -S sxhkd --noconfirm # need to install this separetly from bspwm on arch
 	paru -S texlive-most tllocalmgr-git --noconfirm
+elif [[ "$OS" == *"Darwin"* ]]; then
+	MACOS_APPS="brave-browser kitty"
+	brew install --cask $(echo $MACOS_APPS) $(echo $OS_COMMON_APPS)
 fi
 
 # This is needed to enable siji fonts in polybar for some reason
