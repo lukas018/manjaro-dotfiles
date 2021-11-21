@@ -20,11 +20,6 @@ alias l='ls -lah'
 eval "$(starship init zsh)"
 eval "$(pyenv init -)"
 
-# Configure Node Version Manager (NVM)
-export NVM_DIR="$HOME/.config/nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
 #### FISH shell functionality ####
 # Auto suggestion
 source ~/.config/zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
