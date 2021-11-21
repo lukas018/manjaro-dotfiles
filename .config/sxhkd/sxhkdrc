@@ -1,3 +1,5 @@
+#!/usr/bin/bash
+
 # terminal emulator
 super + Return
 	  "$TERMINAL"
@@ -11,11 +13,42 @@ super + shift + d
 
 # make sxhkd reload its configuration files:
 super + r
-	pkill -USR1 -x sxhkd
+    pkill -USR1 -x sxhkd
+
+
+# Start emacs client
+super + e
+    emacsclient -c -a 'emacs'
+
+# Run vterm in emacs-client
+super + shift + e
+    emacsclient -c -a 'emacs' --eval '(luklun/run-in-vterm)'
+
+# Restart emacs client - convinient if we want to reload the configuration of server.
+super + shift + r
+    systemctl restart --user emacs
+
+# Capture some notes
+super + c
+    emacsclient --eval '(yequake-toggle "org-capture")'
+
+# Allows us to paste any text into a temporary emacs frame for quick, convinient editing.
+super + y
+    emacsclient --eval "(emacs-everywhere)"
+
+# Find configuration file
+super + b
+    emacsclient -c -a 'emacs' --eval "(luklun/find-config)"
+
+# Reload color scheme globally
+super + shift + b
+    emacsclient --eval "(theme-magic-from-emacs)" && \
+      cp ~/.cache/wal/colors.Xresources ~/.Xresources && \
+      xrdb ~/.Xresources && \
+      bspc wm -r
 
 
 # bspwm hotkeys
-#
 
 # quit/restart bspwm
 super + alt + {q,r}
