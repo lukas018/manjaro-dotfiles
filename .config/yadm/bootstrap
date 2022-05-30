@@ -11,7 +11,7 @@ infiloop=$!
 # Install zsh if we haven't already
 if [ ! $(command -v zsh) ]; then
     echo "Install zsh"
-    if [[ "$OS" == *"Ubuntu"* ]]; then
+    if [[ "$OS" == *"Ubuntu"* || "$OS" == *"Microsoft"* ]]; then
         sudo apt install zsh -y
     elif [[ "$OS" == *"Arch"* || "$OS" == *"Manjaro"* ]]; then
         sudo pacman -S zsh --noconfirm
@@ -23,7 +23,7 @@ fi
 yadm submodule update --recursive --init
 
 # Update the systems package manager
-if [[ "$OS" == *"Ubuntu"* ]]; then
+if [[ "$OS" == *"Ubuntu"*  || "$OS" == *"Microsoft"* ]]; then
     echo "We install some packages"
     sudo apt update
     sudo apt install unzip wget git curl apt-transport-https -y

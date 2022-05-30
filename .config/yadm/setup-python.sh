@@ -5,7 +5,7 @@ echo "Setup python and node"
 OS=$(uname -a)
 
 # Install PYTHON related stuff
-if [[ "$OS" == *"Ubuntu"* ]]; then
+if [[ "$OS" == *"Ubuntu"*  || "$OS" == *"Microsoft"* ]]; then
     echo "Installing ubuntu python packages"
     sudo apt update
     sudo apt install python3-pip python3-venv -y

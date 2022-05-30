@@ -4,7 +4,7 @@
 OS=$(uname -a)
 
 # Prepare the necessary tools for Ubuntu
-if [[ "$OS" == *"Ubuntu"^ ]]; then
+if [[ "$OS" == *"Ubuntu"  || "$OS" == *"Microsoft"*  ]]; then
 	sudo apt update && sudo apt install unzip wget git curl apt-transport-https libtool libtool-bin -y
 elif [[ "$OS" == *"Darwin"* ]]; then
 	brew install unzip wget curl
@@ -14,12 +14,13 @@ fi
 Set the installation directory for fonts
 if [[ "$OS" == *"Darwin"* ]]; then
 	FONT_LOCAL_DIR=~/Library/Fonts
-elif [[ "$OS" == *"Ubuntu"* ]]; then
+elif [[ "$OS" == *"Ubuntu"*  || "$OS" == *"Microsoft"* ]]; then
 	FONT_LOCAL_DIR=~/.local/share/fonts
 fi
-    
+
 # Create the user local fonts directory if needed 
 mkdir -p $FONT_LOCAL_DIR
+[[ -z $TEMPDIR ]] && TMPDIR=/tmp
 
 # INSTALL FONTS
 # Alegreya
@@ -49,7 +50,7 @@ wget https://github.com/IBM/plex/releases/download/v6.0.0/OpenType.zip -O $TMPDI
 
 # SIJI
 # Install dependencies
-if [[ "$OS" == *"Ubuntu"* ]]; then
+if [[ "$OS" == *"Ubuntu"*  || "$OS" == *"Microsoft"* ]]; then
 	sudo apt update
 	sudo apt install x11-utils -y
 elif [[ "$OS" == *"Arch"* || "$OS" == *"MANJARO"* ]]; then
@@ -58,7 +59,7 @@ fi
 
 # Install SIJI font
 
-if [[ "$OS" == *"Ubuntu"* ]]; then
+if [[ "$OS" == *"Ubuntu"*  || "$OS" == *"Microsoft"* ]]; then
 	git clone https://github.com/stark/siji /tmp/siji \
 		&& cd /tmp/siji && sh install.sh -d $HOME/.local/share/fonts
 
@@ -67,14 +68,14 @@ elif [[ "$OS" == *"Arch"* || "$OS" == *"MANJARO"* ]]; then
 fi
 
 # FONT-AWESOME
-if [[ "$OS" == *"Ubuntu"* ]]; then
+if [[ "$OS" == *"Ubuntu"*  || "$OS" == *"Microsoft"* ]]; then
 	sudo apt update && sudo apt install -y fonts-font-awesome
 elif [[ "$OS" == *"Arch"* || "$OS" == *"MANJARO"* ]]; then
 	paru -S ttf-font-awesome --noconfirm
 fi
 
 # PAPER ICON
-if [[ "$OS" == *"Ubuntu"* ]]; then
+if [[ "$OS" == *"Ubuntu"*  || "$OS" == *"Microsoft"* ]]; then
 	yes \r | sudo add-apt-repository ppa:snwh/ppa && sudo apt update -y && sudo apt install paper-icon-theme -y
 elif [[ "$OS" == *"Arch"* || "$OS" == *"MANJARO"* ]]; then
 	paru -S paper-icon-theme --noconfirm

@@ -106,13 +106,13 @@ if [[ "$OS" == *"Ubuntu"* ]]; then
 	install_polybar_deb
 	install_alacritty_deb
 	install_picom_deb
-	sudo apt install texlive-latex-extra -y
+	# sudo apt install texlive-latex-extra -y
 	sudo apt bspwm
 elif [[ "$OS" == *"Arch"* || "$OS" == *"MANJARO"* ]]; then
 	ARCH_APPS="brave polybar alacritty"
 	paru -S $(echo $ARCH_APPS) $(echo $LINUX_APPS) --noconfirm
 	paru -S sxhkd --noconfirm # need to install this separetly from bspwm on arch
-	paru -S texlive-most tllocalmgr-git --noconfirm
+	# paru -S texlive-most tllocalmgr-git --noconfirm
 	paru -S bspwm-rounded-corners-git # Who doesn't love rounded corners
 elif [[ "$OS" == *"Darwin"* ]]; then
 	MACOS_APPS="brave-browser kitty"
