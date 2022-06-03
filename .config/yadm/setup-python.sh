@@ -50,6 +50,6 @@ curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/install-
 
 
 # Install node package manager
-curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | zsh
+curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash
 source_zsh_config
 nvm install node
